@@ -5,7 +5,7 @@ import List.*
 trait Student:
   def name: String
   def year: Int
-  def enrolling(course: Course): Unit // the student participates to a Course
+  def enrolling(course: Course*): Unit // the student participates to a Course
   def courses: List[String] // names of course the student participates to
   def hasTeacher(teacher: String): Boolean // is the student participating to a course of this teacher?
 
@@ -20,7 +20,7 @@ object Student:
 
     private var _courses: List[Course] = Nil()
     override def courses: List[String] = map(_courses)(c => c.name)
-    override def enrolling(course: Course) = _courses = append(Cons(course,Nil()), _courses)
+    override def enrolling(courses: Course*) = courses foreach(c => _courses = append(Cons(c,Nil()), _courses))
     override def hasTeacher(teacher: String): Boolean = contains(map(_courses)(c => c.teacher), teacher)
 
 object Course:
@@ -34,8 +34,8 @@ object Course:
   val s1 = Student("mario", 2015)
   val s2 = Student("gino", 2016)
   val s3 = Student("rino") // defaults to 2017
-  s1.enrolling(cPPS)
-  s1.enrolling(cPCD)
+  s1.enrolling(cPPS, cPCD)
+  //s1.enrolling(cPCD)
   s2.enrolling(cPPS)
   s3.enrolling(cPPS)
   s3.enrolling(cPCD)
