@@ -29,7 +29,10 @@ object Course:
 
 object SameTeacher:
   def unapply(courses: List[Course]): scala.Option[String] = courses match
-    case Cons(h, t) => foldLeft(t)(scala.Option(h.teacher))((teacher, course) => teacher.filter(_ == course.teacher))
+    case Cons(h, t) =>
+      if length(filter(courses)(c => h.teacher == c.teacher)) == length(courses) then
+        scala.Option(h.teacher)
+      else scala.Option.empty
     case _ => scala.Option.empty
 
 @main def checkStudents(): Unit =
