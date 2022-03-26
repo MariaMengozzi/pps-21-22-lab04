@@ -30,7 +30,7 @@ object Course:
 object SameTeacher:
   def unapply(courses: List[Course]): scala.Option[String] = courses match
     case Cons(h, t) =>
-      if length(filter(courses)(c => h.teacher == c.teacher)) == length(courses) then
+      if length(filter(courses)(h.teacher == _.teacher)) == length(courses) then
         scala.Option(h.teacher)
       else scala.Option.empty
     case _ => scala.Option.empty
