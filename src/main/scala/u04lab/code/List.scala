@@ -65,5 +65,10 @@ object List:
     var l: List[A] = Nil()
     args.foreach(a => l = Cons(a, l))
     reverse(l)
-    
+
+  def checkAllEquals[A](list: List[A], e: A): Boolean = list match
+    case Cons(h,t) => h == e == checkAllEquals(t, e)
+    case _ => true
+    //length(filter(list)(e == _)) == length(list)
+
 end List

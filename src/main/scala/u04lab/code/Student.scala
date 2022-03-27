@@ -20,7 +20,7 @@ object Student:
 
     private var _courses: List[Course] = Nil()
     override def courses: List[String] = map(_courses)(c => c.name)
-    override def enrolling(courses: Course*) = courses foreach(c => _courses = append(Cons(c,Nil()), _courses))
+    override def enrolling(courses: Course*) = courses foreach(c => _courses = Cons(c, _courses))
     override def hasTeacher(teacher: String): Boolean = contains(map(_courses)(c => c.teacher), teacher)
 
 object Course:
@@ -29,11 +29,8 @@ object Course:
 
 object SameTeacher:
   def unapply(courses: List[Course]): scala.Option[String] = courses match
-    case Cons(h, t) =>
-      if length(filter(courses)(h.teacher == _.teacher)) == length(courses) then
-        scala.Option(h.teacher)
-      else scala.Option.empty
-    case _ => scala.Option.empty
+    case Cons(h, t) if checkAllEquals(map(courses)(_.teacher), h.teacher) => Some(h.teacher)
+    case _ => None
 
 @main def checkStudents(): Unit =
   val cPPS = Course("PPS", "Viroli")
